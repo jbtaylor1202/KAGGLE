@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 
 #Set working directory
-#setwd("~/Desktop/Kobe Bryant Shots")
+setwd("C:/Users/joet/Desktop/[CURRENT]/GitHub/Kaggle/Kobe Bryant Shots")
 
 #Read data file
 rawData<-read.csv(file = "data.csv")
@@ -36,7 +36,7 @@ testData$shot_made_flag = 1
 submit2 <- data.frame(shot_id = testData$shot_id, shot_made_flag=testData$shot_made_flag)
 write.csv(submit2, file = "allShotsScore.csv", row.names = FALSE)
 
-
+######################
 #All 50/50
 #Add most 50/50 chance (0.5) to the shot_made_flag
 testData$shot_made_flag = 0.5
@@ -44,3 +44,11 @@ testData$shot_made_flag = 0.5
 #Create csv submission
 submit3<- data.frame(shot_id = testData$shot_id, shot_made_flag=testData$shot_made_flag)
 write.csv(submit3, file = "allShots50.csv", row.names = FALSE)
+
+#######################
+#All mean as prbabuiliy to the shot_made_flag
+testData$shot_made_flag = mean(trainData$shot_made_flag)
+
+#Create csv submission
+submit4<- data.frame(shot_id = testData$shot_id, shot_made_flag=testData$shot_made_flag)
+write.csv(submit4, file = "allShotsmean.csv", row.names = FALSE)
