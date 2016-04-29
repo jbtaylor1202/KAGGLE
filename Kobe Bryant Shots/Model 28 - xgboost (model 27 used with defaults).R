@@ -141,24 +141,23 @@ sparse_matrix_test <- sparse.model.matrix(shot_made_flag~.-1, data=testData)
 
 
 #Fit and examine model
-set.seed(2012)
 xgboostfit1 <- xgboost(data = sparse_matrix_train,
-                     label = trainShotMadeFlags,
-                     max.depth = 12, 
-                     eta = 1, 
-                     nthread = 2, 
-                     nround = 12, 
-                     objective = "binary:logistic")
+                       label = trainShotMadeFlags,
+                       nrounds = 10,
+                       objective = "binary:logistic",
+                       set.seed=1202)
 
 
 importance <- xgb.importance(feature_names = sparse_matrix_train@Dimnames[[2]], model = xgboostfit1)
 importance
 xgb.plot.importance(importance_matrix = importance)
 
-
+dtrain <- xgb.DMatrix(sparse_matrix_train, label = trainShotMadeFlags)
+history <- xgb.cv(data = dtrain, nround=10, nfold = 5, early.stop.round = 3, metrics=list("rmse","auc"),
+                  objective = "binary:logistic")
 
 
 pred <- predict(xgboostfit1,sparse_matrix_test)
 testData$shot_made_flag = pred
 submit <- data.frame(shot_id = testShotIDs, shot_made_flag=pred)
-write.csv(submit, file = "Model 27 - xgboost1.csv", row.names = FALSE)
+write.csv(submit, file = "Model 28 - xgboost1.csv", row.names = FALSE)
