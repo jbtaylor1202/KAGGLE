@@ -7,7 +7,6 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(xgboost)
-library(Matrix)
 
 #Set working directory
 setwd("C:/Users/joet/Desktop/[CURRENT]/GitHub/Kaggle/Kobe Bryant Shots")
